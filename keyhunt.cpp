@@ -412,102 +412,30 @@ Int lambda,lambda2,beta,beta2;
 
 Secp256K1 *secp;
 
-// Variáveis globais para armazenar os intervalos
-char *range_start;
-char *range_end;
-int running = 1;       // Controle do loop
-pthread_mutex_t lock;  // Mutex para proteger as variáveis compartilhadas
-
-// Função para atualizar o intervalo
-void* updateRange(void* args) {
-    unsigned long long prefix = 0x17a1a7ac6e3b;  // Prefixo inicial
-    unsigned long long prefix_end = 0x17a1a7ac6e3f;  // Prefixo final
-    const char* suffix_start = "000000";
-    const char* suffix_end = "ffffffff";
-
-    while (running) {
-        pthread_mutex_lock(&lock);
-        // Atualiza o intervalo global
-        snprintf(range_start, 64, "%llx%s", prefix, suffix_start);
-        snprintf(range_end, 64, "%llx%s", prefix, suffix_end);
-        pthread_mutex_unlock(&lock);
-
-        // Incrementa o prefixo
-        prefix++;
-        if (prefix > prefix_end) {
-            prefix = 0x17a1a7ac6e3b;  // Reinicia para o prefixo inicial
-        }
-
-        sleep(4);  // Aguarda 4 segundos
-    }
-    return NULL;
-}
-
-// Função principal do programa
-int main(int argc, char **argv) {
-    char buffer[2048];
-    char rawvalue[32];
-    struct tothread *tt; // tothread
-    Tokenizer t, tokenizerbsgs; // tokenizer
-    char *fileName = NULL;
-    char *hextemp = NULL;
-    char *aux = NULL;
-    char *aux2 = NULL;
-    char *pointx_str = NULL;
-    char *pointy_str = NULL;
-    char *str_seconds = NULL;
-    char *str_total = NULL;
-    char *str_pretotal = NULL;
-    char *str_divpretotal = NULL;
-    char *bf_ptr = NULL;
-    char *bPload_threads_available;
-    FILE *fd, *fd_aux1, *fd_aux2, *fd_aux3;
-    uint64_t i, BASE, PERTHREAD_R, itemsbloom, itemsbloom2, itemsbloom3;
-    uint32_t finished;
-    int readed, continue_flag, check_flag, c, sair, index_value, j;
-    Int total, pretotal, debugcount_mpz, seconds, div_pretotal, int_aux, int_r, int_q, int58;
-    struct bPload *bPload_temp_ptr;
-    size_t rsize;
-
-    // Aloca memória para range_start e range_end
-    range_start = (char *)malloc(64 * sizeof(char));
-    range_end = (char *)malloc(64 * sizeof(char));
-
-    // Inicializa as variáveis com valores padrão
-    snprintf(range_start, 64, "0x17a1a7ac6e3b000000");
-    snprintf(range_end, 64, "0x17a1a7ac6e3bffffffff");
-
-    // Inicializa o mutex para garantir thread-safe
-    pthread_mutex_init(&lock, NULL);
-
-    // Cria a thread para atualizar o intervalo a cada 4 segundos
-    pthread_t rangeThread;
-    if (pthread_create(&rangeThread, NULL, updateRange, NULL) != 0) {
-        fprintf(stderr, "Erro ao criar a thread de atualização de intervalo.\n");
-        return 1;
-    }
-
-    // O restante do código do seu main
-    // Exemplo de uso dos valores de range_start e range_end
-    for (int i = 0; i < 10; i++) {
-        pthread_mutex_lock(&lock);
-        // Exibe o intervalo atual
-        printf("Intervalo Atual: %s - %s\n", range_start, range_end);
-        pthread_mutex_unlock(&lock);
-
-        sleep(1);  // Simula o processamento no programa principal
-    }
-
-    // Finaliza a thread e libera a memória
-    running = 0;
-    pthread_join(rangeThread, NULL);  // Aguarda a thread terminar
-    pthread_mutex_destroy(&lock);    // Destrói o mutex
-    free(range_start);               // Libera a memória alocada para range_start
-    free(range_end);                 // Libera a memória alocada para range_end
-
-    return 0;
-}
-
+int main(int argc, char **argv)	{
+	char buffer[2048];
+	char rawvalue[32];
+	struct tothread *tt;	//tothread
+	Tokenizer t,tokenizerbsgs;	//tokenizer
+	char *fileName = NULL;
+	char *hextemp = NULL;
+	char *aux = NULL;
+	char *aux2 = NULL;
+	char *pointx_str = NULL;
+	char *pointy_str = NULL;
+	char *str_seconds = NULL;
+	char *str_total = NULL;
+	char *str_pretotal = NULL;
+	char *str_divpretotal = NULL;
+	char *bf_ptr = NULL;
+	char *bPload_threads_available;
+	FILE *fd,*fd_aux1,*fd_aux2,*fd_aux3;
+	uint64_t i,BASE,PERTHREAD_R,itemsbloom,itemsbloom2,itemsbloom3;
+	uint32_t finished;
+	int readed,continue_flag,check_flag,c,salir,index_value,j;
+	Int total,pretotal,debugcount_mpz,seconds,div_pretotal,int_aux,int_r,int_q,int58;
+	struct bPload *bPload_temp_ptr;
+	size_t rsize;
 	
 #if defined(_WIN64) && !defined(__CYGWIN__)
 	DWORD s;
