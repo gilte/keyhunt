@@ -87,7 +87,7 @@ struct bPload	{
 	uint64_t from;
 	uint64_t to;
 	uint64_t counter;
-	uint64_t workload
+	uint64_t workload;
 	uint32_t aux;
 	uint32_t finished;
 };
