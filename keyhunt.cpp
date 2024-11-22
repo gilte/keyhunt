@@ -677,7 +677,25 @@ int main(int argc, char **argv)	{
 			break;
 			case 'r':
 				if(optarg != NULL)	{
-					stringtokenizer(optarg,&t);
+					if (optarg == NULL) {
+    FILE *file = fopen("range.txt", "r");
+    if (file) {
+        char buffer[256];
+        if (fgets(buffer, sizeof(buffer), file)) {
+            optarg = strdup(buffer); // Usa o intervalo do arquivo como se fosse fornecido na linha de comando
+            fclose(file);
+        } else {
+            fprintf(stderr, "[E] Erro ao ler o arquivo range.txt\n");
+            fclose(file);
+            exit(EXIT_FAILURE);
+        }
+    } else {
+        fprintf(stderr, "[E] Nenhum intervalo foi especificado e range.txt não foi encontrado.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
+		         	stringtokenizer(optarg,&t);
 					switch(t.n)	{
 						case 1:
 							range_start = nextToken(&t);
