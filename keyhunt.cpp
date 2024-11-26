@@ -1063,7 +1063,7 @@ int main(int argc, char **argv)	{
 			
 		}
 		else	{	//Default N
-			BSGS_N.SetInt64((uint64_t)0x100000000000);
+			BSGS_N.SetInt64((uint64_t)0x1000000000);
 		}
 
 		if(BSGS_N.HasSqrt())	{	//If the root is exact
